@@ -103,6 +103,7 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerMiddleAnchorPoint 
     self.minWidth = kSPUserResizableViewDefaultMinWidth;
     self.minHeight = kSPUserResizableViewDefaultMinHeight;
     self.preventsPositionOutsideSuperview = YES;
+    self.disable = NO;
 }
 
 - (id)initWithFrame:(CGRect)frame {
@@ -178,39 +179,47 @@ typedef struct CGPointSPUserResizableViewAnchorPointPair {
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    // Notify the delegate we've begun our editing session.
-    if (self.delegate && [self.delegate respondsToSelector:@selector(userResizableViewDidBeginEditing:)]) {
-        [self.delegate userResizableViewDidBeginEditing:self];
-    }
-    
-    [borderView setHidden:NO];
-    UITouch *touch = [touches anyObject];
-    anchorPoint = [self anchorPointForTouchLocation:[touch locationInView:self]];
-    
-    // When resizing, all calculations are done in the superview's coordinate space.
-    touchStart = [touch locationInView:self.superview];
-    if (![self isResizing]) {
-        // When translating, all calculations are done in the view's coordinate space.
-        touchStart = [touch locationInView:self];
+    if (!self.disable) {  
+      // Notify the delegate we've begun our editing session.
+      if (self.delegate && [self.delegate respondsToSelector:@selector(userResizableViewDidBeginEditing:)]) {
+          [self.delegate userResizableViewDidBeginEditing:self];
+      }
+      
+      [self showEditingHandles];
+      UITouch *touch = [touches anyObject];
+      anchorPoint = [self anchorPointForTouchLocation:[touch locationInView:self]];
+      
+      // When resizing, all calculations are done in the superview's coordinate space.
+      touchStart = [touch locationInView:self.superview];
+      if (![self isResizing]) {
+          // When translating, all calculations are done in the view's coordinate space.
+          touchStart = [touch locationInView:self];
+      }
     }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    // Notify the delegate we've ended our editing session.
-    if (self.delegate && [self.delegate respondsToSelector:@selector(userResizableViewDidEndEditing:)]) {
-        [self.delegate userResizableViewDidEndEditing:self];
+    if (!self.disable) {
+      // Notify the delegate we've ended our editing session.
+      if (self.delegate && [self.delegate respondsToSelector:@selector(userResizableViewDidEndEditing:)]) {
+          [self.delegate userResizableViewDidEndEditing:self];
+      }
     }
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-    // Notify the delegate we've ended our editing session.
-    if (self.delegate && [self.delegate respondsToSelector:@selector(userResizableViewDidEndEditing:)]) {
-        [self.delegate userResizableViewDidEndEditing:self];
+    if (!self.disable) {  
+      // Notify the delegate we've ended our editing session.
+      if (self.delegate && [self.delegate respondsToSelector:@selector(userResizableViewDidEndEditing:)]) {
+          [self.delegate userResizableViewDidEndEditing:self];
+      }
     }
 }
 
 - (void)showEditingHandles {
-    [borderView setHidden:NO];
+    if (!self.disable) {
+      [borderView setHidden:NO];
+    }
 }
 
 - (void)hideEditingHandles {
@@ -306,10 +315,12 @@ typedef struct CGPointSPUserResizableViewAnchorPointPair {
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    if ([self isResizing]) {
-        [self resizeUsingTouchLocation:[[touches anyObject] locationInView:self.superview]];
-    } else {
-        [self translateUsingTouchLocation:[[touches anyObject] locationInView:self]];
+    if (!self.disable) {
+      if ([self isResizing]) {
+          [self resizeUsingTouchLocation:[[touches anyObject] locationInView:self.superview]];
+      } else {
+          [self translateUsingTouchLocation:[[touches anyObject] locationInView:self]];
+      }
     }
 }
 
