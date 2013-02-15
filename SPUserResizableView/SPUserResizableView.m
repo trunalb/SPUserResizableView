@@ -6,6 +6,7 @@
 //
 
 #import "SPUserResizableView.h"
+#import "UIView+RPViewUtils.h"
 
 /* Let's inset everything that's drawn (the handles and the content view)
    so that users can trigger a resize from a few pixels outside of
@@ -44,53 +45,58 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerMiddleAnchorPoint 
     CGContextSaveGState(context);
     
     // (1) Draw the bounding box.
-    CGContextSetLineWidth(context, 1.0);
-    CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+    CGContextSetLineWidth(context, 1.3);
+    CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextAddRect(context, CGRectInset(self.bounds, kSPUserResizableViewInteractiveBorderSize/2, kSPUserResizableViewInteractiveBorderSize/2));
     CGContextStrokePath(context);
-    
+  
     // (2) Calculate the bounding boxes for each of the anchor points.
-    CGRect upperLeft = CGRectMake(0.0, 0.0, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
-    CGRect upperRight = CGRectMake(self.bounds.size.width - kSPUserResizableViewInteractiveBorderSize, 0.0, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
-    CGRect lowerRight = CGRectMake(self.bounds.size.width - kSPUserResizableViewInteractiveBorderSize, self.bounds.size.height - kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
-    CGRect lowerLeft = CGRectMake(0.0, self.bounds.size.height - kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
+//    CGRect upperLeft = CGRectMake(0.0, 0.0, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
+//    CGRect upperRight = CGRectMake(self.bounds.size.width - kSPUserResizableViewInteractiveBorderSize, 0.0, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
+//    CGRect lowerRight = CGRectMake(self.bounds.size.width - kSPUserResizableViewInteractiveBorderSize, self.bounds.size.height - kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
+//    CGRect lowerLeft = CGRectMake(0.0, self.bounds.size.height - kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
 //    CGRect upperMiddle = CGRectMake((self.bounds.size.width - kSPUserResizableViewInteractiveBorderSize)/2, 0.0, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
 //    CGRect lowerMiddle = CGRectMake((self.bounds.size.width - kSPUserResizableViewInteractiveBorderSize)/2, self.bounds.size.height - kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
 //    CGRect middleLeft = CGRectMake(0.0, (self.bounds.size.height - kSPUserResizableViewInteractiveBorderSize)/2, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
 //    CGRect middleRight = CGRectMake(self.bounds.size.width - kSPUserResizableViewInteractiveBorderSize, (self.bounds.size.height - kSPUserResizableViewInteractiveBorderSize)/2, kSPUserResizableViewInteractiveBorderSize, kSPUserResizableViewInteractiveBorderSize);
   
     // (3) Create the gradient to paint the anchor points.
-    CGFloat colors [] = { 
-        0.4, 0.8, 1.0, 1.0, 
-        0.0, 0.0, 1.0, 1.0
-    };
-    CGColorSpaceRef baseSpace = CGColorSpaceCreateDeviceRGB();
-    CGGradientRef gradient = CGGradientCreateWithColorComponents(baseSpace, colors, NULL, 2);
-    CGColorSpaceRelease(baseSpace), baseSpace = NULL;
-    
+//    CGFloat colors [] = { 
+//        0.4, 0.8, 1.0, 1.0, 
+//        0.0, 0.0, 1.0, 1.0
+//    };
+//    CGColorSpaceRef baseSpace = CGColorSpaceCreateDeviceRGB();
+//    CGGradientRef gradient = CGGradientCreateWithColorComponents(baseSpace, colors, NULL, 2);
+//    CGColorSpaceRelease(baseSpace), baseSpace = NULL;
+  
     // (4) Set up the stroke for drawing the border of each of the anchor points.
-    CGContextSetLineWidth(context, 1);
-    CGContextSetShadow(context, CGSizeMake(0.5, 0.5), 1);
-    CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
-    
+//    CGContextSetLineWidth(context, 1);
+//    CGContextSetShadow(context, CGSizeMake(0.5, 0.5), 1);
+//    CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
+  
     // (5) Fill each anchor point using the gradient, then stroke the border.
-  const int pointCount = 4;
-    CGRect allPoints[pointCount] = { upperLeft, upperRight, lowerRight, lowerLeft/*, upperMiddle, lowerMiddle, middleLeft, middleRight*/ };
-    for (NSInteger i = 0; i < pointCount; i++) {
-        CGRect currPoint = allPoints[i];
-        CGContextSaveGState(context);
-        CGContextAddEllipseInRect(context, currPoint);
-        CGContextClip(context);
-        CGPoint startPoint = CGPointMake(CGRectGetMidX(currPoint), CGRectGetMinY(currPoint));
-        CGPoint endPoint = CGPointMake(CGRectGetMidX(currPoint), CGRectGetMaxY(currPoint));
-        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
-        CGContextRestoreGState(context);
-        CGContextStrokeEllipseInRect(context, CGRectInset(currPoint, 1, 1));
-    }
-    CGGradientRelease(gradient), gradient = NULL;
-    CGContextRestoreGState(context);
+//  const int pointCount = 4;
+//    CGRect allPoints[pointCount] = { upperLeft, upperRight, lowerRight, lowerLeft/*, upperMiddle, lowerMiddle, middleLeft, middleRight*/ };
+//    for (NSInteger i = 0; i < pointCount; i++) {
+//        CGRect currPoint = allPoints[i];
+//        CGContextSaveGState(context);
+//        CGContextAddEllipseInRect(context, currPoint);
+//        CGContextClip(context);
+//        CGPoint startPoint = CGPointMake(CGRectGetMidX(currPoint), CGRectGetMinY(currPoint));
+//        CGPoint endPoint = CGPointMake(CGRectGetMidX(currPoint), CGRectGetMaxY(currPoint));
+//        CGContextDrawLinearGradient(context, gradient, startPoint, endPoint, 0);
+//        CGContextRestoreGState(context);
+//        CGContextStrokeEllipseInRect(context, CGRectInset(currPoint, 1, 1));
+//    }
+//    CGGradientRelease(gradient), gradient = NULL;
+
+  CGContextRestoreGState(context);
 }
 
+@end
+
+@interface SPUserResizableView()
+@property (nonatomic) UIImageView *nubView;
 @end
 
 @implementation SPUserResizableView
@@ -130,6 +136,18 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerMiddleAnchorPoint 
     // Ensure the border view is always on top by removing it and adding it to the end of the subview list.
     [borderView removeFromSuperview];
     [self addSubview:borderView];
+  
+  //add image at the bottom
+  UIImage *nubImg = [UIImage imageNamed:@"resize_nub"];
+  UIImageView *nubView = [[UIImageView alloc] initWithImage:nubImg];
+  [nubView setHeight:nubImg.size.height/2];
+  [nubView setWidth:nubImg.size.width/2];
+  [self addSubview:nubView];
+  
+  [nubView setY:self.contentView.y + self.contentView.height - nubView.height];
+  [nubView setX:self.contentView.x + self.contentView.width - nubView.width];
+  self.nubView = nubView;
+  
 }
 
 - (void)setFrame:(CGRect)newFrame {
@@ -137,6 +155,9 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerMiddleAnchorPoint 
     contentView.frame = CGRectInset(self.bounds, kSPUserResizableViewGlobalInset + kSPUserResizableViewInteractiveBorderSize/2, kSPUserResizableViewGlobalInset + kSPUserResizableViewInteractiveBorderSize/2);
     borderView.frame = CGRectInset(self.bounds, kSPUserResizableViewGlobalInset, kSPUserResizableViewGlobalInset);
     [borderView setNeedsDisplay];
+  [self.nubView setY:self.contentView.y + self.contentView.height - self.nubView.height];
+  [self.nubView setX:self.contentView.x + self.contentView.width - self.nubView.width];
+  
 }
 
 static CGFloat SPDistanceBetweenTwoPoints(CGPoint point1, CGPoint point2) {
@@ -323,6 +344,16 @@ typedef struct CGPointSPUserResizableViewAnchorPointPair {
           [self translateUsingTouchLocation:[[touches anyObject] locationInView:self]];
       }
     }
+}
+
+- (void)setDisable:(BOOL)disable{
+  
+  if (disable) {
+    self.nubView.hidden = YES;
+  }
+  
+  _disable = disable;
+  
 }
 
 - (void)dealloc {
