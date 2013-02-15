@@ -233,6 +233,7 @@
 		9C36DD4E1494491B00D3035F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SPUserResizableView/SPUserResizableView-Prefix.pch";
 				INFOPLIST_FILE = "SPUserResizableView/SPUserResizableView-Info.plist";
@@ -244,6 +245,7 @@
 		9C36DD4F1494491B00D3035F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SPUserResizableView/SPUserResizableView-Prefix.pch";
 				INFOPLIST_FILE = "SPUserResizableView/SPUserResizableView-Info.plist";
@@ -271,6 +273,7 @@
 				9C36DD4F1494491B00D3035F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

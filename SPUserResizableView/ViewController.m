@@ -25,7 +25,6 @@
     currentlyEditingView = userResizableView;
     lastEditedView = userResizableView;
     [self.view addSubview:userResizableView];
-    [contentView release]; [userResizableView release];
     
     // (2) Create a second resizable view with a UIImageView as the content.
     CGRect imageFrame = CGRectMake(50, 200, 200, 200);
@@ -34,12 +33,10 @@
     imageResizableView.contentView = imageView;
     imageResizableView.delegate = self;
     [self.view addSubview:imageResizableView];
-    [imageView release]; [imageResizableView release];
     
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideEditingHandles)];
     [gestureRecognizer setDelegate:self];
     [self.view addGestureRecognizer:gestureRecognizer];
-    [gestureRecognizer release];
 }
 
 - (void)userResizableViewDidBeginEditing:(SPUserResizableView *)userResizableView {

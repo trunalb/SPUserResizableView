@@ -21,7 +21,7 @@ typedef struct SPUserResizableViewAnchorPoint {
 
 @interface SPUserResizableView : UIView {
     SPGripViewBorderView *borderView;
-    UIView *contentView;
+    UIView *__weak contentView;
     CGPoint touchStart;
     CGFloat minWidth;
     CGFloat minHeight;
@@ -29,13 +29,13 @@ typedef struct SPUserResizableViewAnchorPoint {
     // Used to determine which components of the bounds we'll be modifying, based upon where the user's touch started.
     SPUserResizableViewAnchorPoint anchorPoint;
     
-    id <SPUserResizableViewDelegate> delegate;
+    id <SPUserResizableViewDelegate> __weak delegate;
 }
 
-@property (nonatomic, assign) id <SPUserResizableViewDelegate> delegate;
+@property (nonatomic, weak) id <SPUserResizableViewDelegate> delegate;
 
 // Will be retained as a subview.
-@property (nonatomic, assign) UIView *contentView;
+@property (nonatomic, weak) UIView *contentView;
 
 // Default is 48.0 for each.
 @property (nonatomic) CGFloat minWidth;
