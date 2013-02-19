@@ -45,7 +45,10 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerMiddleAnchorPoint 
     CGContextSaveGState(context);
     
     // (1) Draw the bounding box.
-    CGContextSetLineWidth(context, 1.3);
+    //dashed lines
+    float dash[2]={6 ,5}; // pattern 6 times “solid”, 5 times “empty”
+    CGContextSetLineDash(context,0,dash,2);
+//    CGContextSetLineWidth(context, 1.3);
     CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     CGContextAddRect(context, CGRectInset(self.bounds, kSPUserResizableViewInteractiveBorderSize/2, kSPUserResizableViewInteractiveBorderSize/2));
     CGContextStrokePath(context);
