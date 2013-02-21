@@ -249,6 +249,7 @@ typedef struct CGPointSPUserResizableViewAnchorPointPair {
 
 - (void)hideEditingHandles {
     [borderView setHidden:YES];
+  [self.nubView setHidden:YES];
 }
 
 - (void)resizeUsingTouchLocation:(CGPoint)touchPoint {
