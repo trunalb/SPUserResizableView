@@ -50,7 +50,7 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerMiddleAnchorPoint 
     CGContextSetLineDash(context,0,dash,2);
 //    CGContextSetLineWidth(context, 1.3);
     CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
-    CGContextAddRect(context, CGRectInset(self.bounds, kSPUserResizableViewInteractiveBorderSize/2, kSPUserResizableViewInteractiveBorderSize/2));
+    CGContextAddRect(context, self.bounds);
     CGContextStrokePath(context);
   
     // (2) Calculate the bounding boxes for each of the anchor points.
@@ -133,7 +133,7 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerMiddleAnchorPoint 
 - (void)setContentView:(UIView *)newContentView {
     [contentView removeFromSuperview];
     contentView = newContentView;
-    contentView.frame = CGRectInset(self.bounds, kSPUserResizableViewGlobalInset + kSPUserResizableViewInteractiveBorderSize/2, kSPUserResizableViewGlobalInset + kSPUserResizableViewInteractiveBorderSize/2);
+    contentView.frame = self.bounds;
     [self addSubview:contentView];
     
     // Ensure the border view is always on top by removing it and adding it to the end of the subview list.
@@ -155,7 +155,7 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerMiddleAnchorPoint 
 
 - (void)setFrame:(CGRect)newFrame {
     [super setFrame:newFrame];
-    contentView.frame = CGRectInset(self.bounds, kSPUserResizableViewGlobalInset + kSPUserResizableViewInteractiveBorderSize/2, kSPUserResizableViewGlobalInset + kSPUserResizableViewInteractiveBorderSize/2);
+    contentView.frame = self.bounds;
     borderView.frame = CGRectInset(self.bounds, kSPUserResizableViewGlobalInset, kSPUserResizableViewGlobalInset);
     [borderView setNeedsDisplay];
   [self.nubView setY:self.contentView.y + self.contentView.height - self.nubView.height];
