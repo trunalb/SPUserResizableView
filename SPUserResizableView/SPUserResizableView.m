@@ -361,8 +361,8 @@ typedef struct CGPointSPUserResizableViewAnchorPointPair {
 }
 
 - (void)dealloc {
-  [super dealloc];
   [contentView removeFromSuperview];
+  [super dealloc];
 }
 
 @end
